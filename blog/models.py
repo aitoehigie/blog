@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.utils.text import slugify
+
 
 class Post(models.Model):
     STATUS_CHOICES = (
@@ -21,5 +23,12 @@ class Post(models.Model):
     
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.slug = slugify(self.title)
+        super(Post, self).save(*args, **kwargs)
+    
+
 
 
